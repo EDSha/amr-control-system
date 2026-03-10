@@ -1,0 +1,24 @@
+FROM osrf/ros:humble-desktop
+
+RUN apt update && apt install -y \
+    python3-pip \
+    python3-venv \
+    git \
+    wget \
+    && rm -rf /var/lib/apt/lists/*
+
+RUN pip3 install --no-cache-dir \
+    paho-mqtt \
+    fastapi \
+    uvicorn \
+    sqlalchemy \
+    websockets \
+    numpy
+
+WORKDIR /ros2_ws
+
+COPY entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
+
+ENTRYPOINT ["/entrypoint.sh"]
+CMD ["bash"]

@@ -1,0 +1,35 @@
+version: '3.8'
+
+services:
+  ros-dev:
+    build:
+      context: ./ros-dev
+      dockerfile: Dockerfile.ros
+    container_name: ros_dev
+    stdin_open: true
+    tty: true
+    volumes:
+      - ../robot:/ros2_ws/src/robot
+      - ../services/fleet-manager/src:/ros2_ws/src/fleet-manager
+      - /tmp/.X11-unix:/tmp/.X11-unix
+    environment:
+      - DISPLAY=${DISPLAY:-host.docker.internal:0}
+      - QT_X11_NO_MITSHM=1
+    networks:
+      - fleet-network
+    working_dir: /ros2_ws
+    command: bash -c "source /opt/ros/humble/setup.bash && bash"
+
+  mqtt:
+    image: eclipse-mosquitto:2
+    ports:
+      - "1883:1883"
+      - "9001:9001"
+    volumes:
+      - ./mosquitto/mosquitto.conf:/mosquitto/config/mosquitto.conf
+    networks:
+      - fleet-network
+
+networks:
+  fleet-network:
+    driver: bridge
