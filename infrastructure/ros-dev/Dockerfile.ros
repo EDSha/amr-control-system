@@ -16,9 +16,16 @@ RUN pip3 install --no-cache-dir \
     numpy
 
 WORKDIR /ros2_ws
+COPY ../robot /ros2_ws/src/robot
+COPY ../services/fleet-manager/src /ros2_ws/src/fleet-manager
 
-COPY entrypoint.sh /entrypoint.sh
+# Собираем пакет (здесь важно, что мы копируем исходники и собираем)
+RUN . /opt/ros/humble/setup.sh && colcon build --packages-select amr_hardware
+
+COPY infrastructure/ros-dev/entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
 
 ENTRYPOINT ["/entrypoint.sh"]
 CMD ["bash"]
+
+# RUN apt update && apt install -y ros-humble-gazebo-ros-pkgs

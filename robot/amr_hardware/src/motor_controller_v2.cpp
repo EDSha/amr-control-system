@@ -1,6 +1,6 @@
 #include "rclcpp/rclcpp.hpp"
 #include "std_msgs/msg/float64.hpp"
-#include "robot_control/msg/robot_status.hpp"  // наше кастомное сообщение
+#include "amr_hardware/msg/robot_status.hpp"  // наше кастомное сообщение
 
 class MotorControllerV2 : public rclcpp::Node
 {
@@ -12,7 +12,7 @@ public:
         right_motor_pub_ = this->create_publisher<std_msgs::msg::Float64>("/right_motor/speed", 10);
         
         // NEW: Publisher for robot status
-        status_pub_ = this->create_publisher<robot_control::msg::RobotStatus>("/robot_status", 10);
+        status_pub_ = this->create_publisher<amr_hardware::msg::RobotStatus>("/robot_status", 10);
         
         // Subscribers for motor commands (как было)
         left_cmd_sub_ = this->create_subscription<std_msgs::msg::Float64>(
@@ -63,7 +63,7 @@ private:
     void status_timer_callback()
     {
         // NEW: Формируем и публикуем статус робота
-        auto status_msg = robot_control::msg::RobotStatus();
+        auto status_msg = amr_hardware::msg::RobotStatus();
         
         // Заполняем поля
         status_msg.robot_id = "telezhka_001";
@@ -86,7 +86,7 @@ private:
     // Publishers
     rclcpp::Publisher<std_msgs::msg::Float64>::SharedPtr left_motor_pub_;
     rclcpp::Publisher<std_msgs::msg::Float64>::SharedPtr right_motor_pub_;
-    rclcpp::Publisher<robot_control::msg::RobotStatus>::SharedPtr status_pub_;
+    rclcpp::Publisher<amr_hardware::msg::RobotStatus>::SharedPtr status_pub_;
     
     // Subscribers
     rclcpp::Subscription<std_msgs::msg::Float64>::SharedPtr left_cmd_sub_;

@@ -2,14 +2,12 @@ version: '3.8'
 
 services:
   ros-dev:
-    build:
-      context: ./ros-dev
-      dockerfile: Dockerfile.ros
+    image: my-ros-dev:stable
     container_name: ros_dev
     stdin_open: true
     tty: true
     volumes:
-      - ../robot:/ros2_ws/src/robot
+      - ../robot:/ros2_ws/src/robot          # для live-редактирования (переопределит скопированное)
       - ../services/fleet-manager/src:/ros2_ws/src/fleet-manager
       - /tmp/.X11-unix:/tmp/.X11-unix
     environment:

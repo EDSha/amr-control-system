@@ -2,7 +2,7 @@
 import rclpy
 from rclpy.node import Node
 from std_msgs.msg import Float64
-from robot_control.msg import RobotStatus
+from amr_hardware.msg import RobotStatus
 import paho.mqtt.client as mqtt
 import json
 
